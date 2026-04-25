@@ -15,6 +15,7 @@ const SHEET_CSV_URL =
 
 const GAME_IDS = {
     clicker: 'clicker',
+    dodge: 'dodge',
 };
 
 // ---- STATE ----
@@ -40,6 +41,10 @@ function navigateTo(screenId) {
     if (screenId === 'screen-clicker') {
         resetClicker();
         loadLeaderboard('clicker');
+    }
+    if (screenId === 'screen-dodge') {
+        resetDodge();
+        loadLeaderboard('dodge');
     }
 }
 
@@ -149,10 +154,158 @@ function resetClicker() {
 }
 
 // ============================================================
+//  DODGE GAME
+// ============================================================
+let dodgeScore = 0;
+let dodgeAnimationFrame = null;
+let isDodging = false;
+let player = { x: 135, y: 350, w: 30, h: 30, speed: 6, dx: 0 };
+let obstacles = [];
+let obstacleSpeed = 3;
+let frameCount = 0;
+
+// Keys
+const keys = { ArrowLeft: false, ArrowRight: false };
+
+window.addEventListener('keydown', (e) => {
+    if (keys.hasOwnProperty(e.code)) {
+        keys[e.code] = true;
+        // Prevent default scrolling for arrows
+        if (isDodging) e.preventDefault();
+    }
+});
+
+window.addEventListener('keyup', (e) => {
+    if (keys.hasOwnProperty(e.code)) {
+        keys[e.code] = false;
+    }
+});
+
+function startDodge() {
+    dodgeScore = 0;
+    obstacleSpeed = 3;
+    frameCount = 0;
+    obstacles = [];
+    player.x = 135;
+    isDodging = true;
+
+    $('dodge-score').textContent = '0';
+    $('dodge-ready').classList.add('hidden');
+    $('dodge-playing').classList.remove('hidden');
+    $('dodge-done').classList.add('hidden');
+
+    window.focus();
+    dodgeAnimationFrame = requestAnimationFrame(dodgeLoop);
+}
+
+function dodgeLoop() {
+    if (!isDodging) return;
+
+    const canvas = $('dodge-canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Update
+    frameCount++;
+    if (frameCount % 60 === 0) { // Every ~1 second
+        dodgeScore += 10;
+        $('dodge-score').textContent = dodgeScore;
+        obstacleSpeed += 0.1; // Gets faster
+    }
+
+    // Move player
+    if (keys.ArrowLeft) player.x -= player.speed;
+    if (keys.ArrowRight) player.x += player.speed;
+
+    // Boundaries
+    if (player.x < 0) player.x = 0;
+    if (player.x + player.w > canvas.width) player.x = canvas.width - player.w;
+
+    // Spawn obstacles
+    if (Math.random() < 0.05 + (obstacleSpeed * 0.005)) { // Spawn rate increases slightly
+        const w = 20 + Math.random() * 30;
+        obstacles.push({
+            x: Math.random() * (canvas.width - w),
+            y: -50,
+            w: w,
+            h: 20 + Math.random() * 20,
+            speed: obstacleSpeed + Math.random() * 2
+        });
+    }
+
+    // Move and check collisions
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = 0; i < obstacles.length; i++) {
+        let obs = obstacles[i];
+        obs.y += obs.speed;
+
+        // Draw obstacle
+        ctx.fillStyle = '#f43f5e'; // accent-3 red
+        ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+
+        // Collision detection
+        if (
+            player.x < obs.x + obs.w &&
+            player.x + player.w > obs.x &&
+            player.y < obs.y + obs.h &&
+            player.y + player.h > obs.y
+        ) {
+            endDodge();
+            return;
+        }
+    }
+
+    // Remove offscreen obstacles
+    obstacles = obstacles.filter(obs => obs.y < canvas.height);
+
+    // Draw player
+    ctx.fillStyle = '#06b6d4'; // accent-2 blue
+    ctx.fillRect(player.x, player.y, player.w, player.h);
+
+    if (isDodging) {
+        dodgeAnimationFrame = requestAnimationFrame(dodgeLoop);
+    }
+}
+
+function endDodge() {
+    isDodging = false;
+    cancelAnimationFrame(dodgeAnimationFrame);
+
+    $('dodge-playing').classList.add('hidden');
+    $('dodge-done').classList.remove('hidden');
+    $('dodge-final-score').textContent = dodgeScore;
+
+    submitScore(GAME_IDS.dodge, dodgeScore, 'submit-status-dodge');
+}
+
+function resetDodge() {
+    isDodging = false;
+    cancelAnimationFrame(dodgeAnimationFrame);
+    dodgeScore = 0;
+    
+    const canvas = $('dodge-canvas');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    $('dodge-ready').classList.remove('hidden');
+    $('dodge-playing').classList.add('hidden');
+    $('dodge-done').classList.add('hidden');
+    
+    if ($('submit-status-dodge')) {
+        $('submit-status-dodge').textContent = '';
+        $('submit-status-dodge').className = 'submit-status';
+    }
+}
+
+// ============================================================
 //  SUBMIT SCORE (Google Forms)
 // ============================================================
-function submitScore(gameId, score) {
-    const statusEl = $('submit-status');
+function submitScore(gameId, score, statusId = 'submit-status') {
+    const statusEl = $(statusId);
+    if (!statusEl) return;
+    
     statusEl.textContent = '⏳ Enviando puntuación...';
     statusEl.className = 'submit-status';
 
@@ -174,7 +327,7 @@ function submitScore(gameId, score) {
         statusEl.textContent = '✅ ¡Puntuación enviada!';
         statusEl.className = 'submit-status success';
         // Reload leaderboard after a moment to let sheets update
-        setTimeout(() => loadLeaderboard('clicker'), 3000);
+        setTimeout(() => loadLeaderboard(gameId), 3000);
     }, 2000);
 }
 

@@ -37,7 +37,11 @@
                     <span class="game-title">Speed Clicker</span>
                     <span class="game-desc">¡Haz el mayor número de clics en 30 segundos!</span>
                 </button>
-                <!-- Aquí se agregarán más juegos -->
+                <button id="btn-dodge" class="game-card" onclick="navigateTo('screen-dodge')">
+                    <span class="game-icon">☄️</span>
+                    <span class="game-title">Meteor Dodge</span>
+                    <span class="game-desc">¡Esquiva los meteoritos! Se pone más rápido.</span>
+                </button>
                 <div class="game-card coming-soon">
                     <span class="game-icon">🔒</span>
                     <span class="game-title">Próximamente</span>
@@ -100,6 +104,58 @@
                 <p class="lb-game-name">Speed Clicker</p>
                 <button class="btn btn-small" onclick="loadLeaderboard('clicker')">🔄 Actualizar</button>
                 <div id="leaderboard-clicker" class="leaderboard-table">
+                    <p class="lb-loading">Cargando...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PANTALLA DODGE ===== -->
+    <div id="screen-dodge" class="screen">
+        <div class="game-layout">
+            <!-- PANEL IZQUIERDO: Juego -->
+            <div class="card glass game-panel">
+                <button class="btn-back" onclick="navigateTo('screen-menu')">← Menú</button>
+                <h2 class="game-heading">☄️ Meteor Dodge</h2>
+                <p class="game-instructions">Usa las flechas ← → para esquivar los meteoritos.</p>
+
+                <!-- Estado: listo para jugar -->
+                <div id="dodge-ready" class="clicker-state">
+                    <button id="btn-dodge-start" class="btn btn-primary btn-big pulse" onclick="startDodge()">
+                        ¡Comenzar! 🚀
+                    </button>
+                </div>
+
+                <!-- Estado: jugando -->
+                <div id="dodge-playing" class="clicker-state hidden">
+                    <div class="stats-row">
+                        <div class="stat-box">
+                            <span class="stat-label">⭐ Puntos</span>
+                            <span id="dodge-score" class="stat-value count">0</span>
+                        </div>
+                    </div>
+                    <canvas id="dodge-canvas" width="300" height="400" style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); border: 1px solid var(--border-glass); margin-top: 16px;"></canvas>
+                </div>
+
+                <!-- Estado: terminado -->
+                <div id="dodge-done" class="clicker-state hidden">
+                    <div class="result-card">
+                        <span class="result-emoji">💥</span>
+                        <p class="result-label">Has sobrevivido:</p>
+                        <p id="dodge-final-score" class="result-score">0</p>
+                        <p class="result-sub">puntos</p>
+                    </div>
+                    <div id="submit-status-dodge" class="submit-status">Enviando puntuación...</div>
+                    <button class="btn btn-primary" onclick="resetDodge()">🔄 Jugar de nuevo</button>
+                </div>
+            </div>
+
+            <!-- PANEL DERECHO: Leaderboard (siempre visible) -->
+            <div class="card glass leaderboard-panel">
+                <h3 class="lb-title">🏅 Leaderboard</h3>
+                <p class="lb-game-name">Meteor Dodge</p>
+                <button class="btn btn-small" onclick="loadLeaderboard('dodge')">🔄 Actualizar</button>
+                <div id="leaderboard-dodge" class="leaderboard-table">
                     <p class="lb-loading">Cargando...</p>
                 </div>
             </div>
