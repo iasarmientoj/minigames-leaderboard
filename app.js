@@ -347,7 +347,7 @@ function startChaos() {
     }, 1000);
 
     // Initial obstacles
-    for(let i=0; i<20; i++) spawnChaosObstacle();
+    for(let i=0; i<4; i++) spawnChaosObstacle();
 
     gameLoopChaos();
 }
@@ -356,8 +356,8 @@ function spawnChaosObstacle() {
     if (!chaosCanvas) return;
     const side = Math.floor(Math.random() * 4);
     let x, y;
-    // La velocidad aumenta gradualmente con el tiempo
-    const speed = 1.5 + Math.random() * 2 + (chaosTimer / 8);
+    // La velocidad aumenta gradualmente con el tiempo (más suave)
+    const speed = 1.2 + Math.random() * 1.5 + (chaosTimer / 12);
     
     if (side === 0) { x = -20; y = Math.random() * chaosCanvas.height; } // Left
     else if (side === 1) { x = chaosCanvas.width + 20; y = Math.random() * chaosCanvas.height; } // Right
@@ -381,8 +381,8 @@ function spawnChaosObstacle() {
 function gameLoopChaos() {
     if (!chaosGameActive) return;
     
-    // Probabilidad de spawn base mucho más alta (0.15) para tener muchos más obstáculos
-    const spawnChance = 0.15 + (chaosTimer * 0.005);
+    // Probabilidad base más baja (0.03) y escalado más amigable
+    const spawnChance = 0.03 + (chaosTimer * 0.004);
     if (Math.random() < spawnChance) {
         spawnChaosObstacle();
     }
