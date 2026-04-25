@@ -347,7 +347,7 @@ function startChaos() {
     }, 1000);
 
     // Initial obstacles
-    for(let i=0; i<5; i++) spawnChaosObstacle();
+    for(let i=0; i<20; i++) spawnChaosObstacle();
 
     gameLoopChaos();
 }
@@ -381,8 +381,8 @@ function spawnChaosObstacle() {
 function gameLoopChaos() {
     if (!chaosGameActive) return;
     
-    // Probabilidad de spawn base (0.02) que aumenta con el tiempo
-    const spawnChance = 0.02 + (chaosTimer * 0.0025);
+    // Probabilidad de spawn base mucho más alta (0.15) para tener muchos más obstáculos
+    const spawnChance = 0.15 + (chaosTimer * 0.005);
     if (Math.random() < spawnChance) {
         spawnChaosObstacle();
     }
