@@ -344,11 +344,6 @@ function startChaos() {
     chaosInterval = setInterval(() => {
         chaosTimer++;
         $('chaos-timer').textContent = chaosTimer;
-        
-        // Add difficulty over time
-        if (chaosTimer % 2 === 0) {
-            spawnChaosObstacle();
-        }
     }, 1000);
 
     // Initial obstacles
@@ -361,7 +356,8 @@ function spawnChaosObstacle() {
     if (!chaosCanvas) return;
     const side = Math.floor(Math.random() * 4);
     let x, y;
-    const speed = 1.5 + Math.random() * 2 + (chaosTimer / 15);
+    // La velocidad aumenta gradualmente con el tiempo
+    const speed = 1.5 + Math.random() * 2 + (chaosTimer / 8);
     
     if (side === 0) { x = -20; y = Math.random() * chaosCanvas.height; } // Left
     else if (side === 1) { x = chaosCanvas.width + 20; y = Math.random() * chaosCanvas.height; } // Right
@@ -384,6 +380,13 @@ function spawnChaosObstacle() {
 
 function gameLoopChaos() {
     if (!chaosGameActive) return;
+    
+    // Probabilidad de spawn base (0.02) que aumenta con el tiempo
+    const spawnChance = 0.02 + (chaosTimer * 0.0025);
+    if (Math.random() < spawnChance) {
+        spawnChaosObstacle();
+    }
+    
     updateChaos();
     drawChaos();
     chaosAnimationId = requestAnimationFrame(gameLoopChaos);
