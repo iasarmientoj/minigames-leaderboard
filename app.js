@@ -72,9 +72,28 @@ btnStart.addEventListener('click', confirmName);
 function confirmName() {
     playerName = inputName.value.trim();
     if (!playerName) return;
+    localStorage.setItem('minigames_player', playerName);
     displayName.textContent = playerName;
     navigateTo('screen-menu');
 }
+
+function changeName() {
+    localStorage.removeItem('minigames_player');
+    inputName.value = playerName;
+    navigateTo('screen-name');
+}
+
+// Check saved name on load
+window.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('minigames_player');
+    if (saved) {
+        playerName = saved;
+        inputName.value = playerName;
+        btnStart.disabled = false;
+        displayName.textContent = playerName;
+        navigateTo('screen-menu');
+    }
+});
 
 // ============================================================
 //  CLICKER GAME
