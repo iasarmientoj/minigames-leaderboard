@@ -523,7 +523,7 @@ function loadLeaderboard(gameId) {
     // Add cache buster to avoid stale data
     const url = `${SHEET_CSV_URL}&_t=${Date.now()}`;
 
-    fetch(url)
+    fetch(url, { cache: 'no-store' })
         .then((res) => {
             if (!res.ok) throw new Error('Network error');
             return res.text();
