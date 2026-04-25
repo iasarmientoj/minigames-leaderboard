@@ -42,6 +42,11 @@
                     <span class="game-title">Meteor Dodge</span>
                     <span class="game-desc">¡Esquiva los meteoritos! Se pone más rápido.</span>
                 </button>
+                <button class="game-card" onclick="navigateTo('screen-chaos')">
+                    <span class="game-icon">🌀</span>
+                    <span class="game-title">Chaos Dodge</span>
+                    <span class="game-desc">¡Esquiva obstáculos que se mueven en todas direcciones!</span>
+                </button>
                 <div class="game-card coming-soon">
                     <span class="game-icon">🔒</span>
                     <span class="game-title">Próximamente</span>
@@ -156,6 +161,58 @@
                 <p class="lb-game-name">Meteor Dodge</p>
                 <button class="btn btn-small" onclick="loadLeaderboard('dodge')">🔄 Actualizar</button>
                 <div id="leaderboard-dodge" class="leaderboard-table">
+                    <p class="lb-loading">Cargando...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PANTALLA CHAOS ===== -->
+    <div id="screen-chaos" class="screen">
+        <div class="game-layout">
+            <!-- PANEL IZQUIERDO: Juego -->
+            <div class="card glass game-panel">
+                <button class="btn-back" onclick="navigateTo('screen-menu')">← Menú</button>
+                <h2 class="game-heading">🌀 Chaos Dodge</h2>
+                <p class="game-instructions">Muévete con las flechas o WASD para esquivar.</p>
+                
+                <!-- Estado: listo para jugar -->
+                <div id="chaos-ready" class="clicker-state">
+                    <button id="btn-chaos-start" class="btn btn-primary btn-big pulse" onclick="startChaos()">
+                        ¡Comenzar! 🚀
+                    </button>
+                </div>
+                
+                <!-- Estado: jugando -->
+                <div id="chaos-playing" class="clicker-state hidden">
+                    <div class="stats-row" style="margin-bottom: 15px;">
+                        <div class="stat-box">
+                            <span class="stat-label">⏱️ Tiempo</span>
+                            <span id="chaos-timer" class="stat-value timer">0</span>
+                        </div>
+                    </div>
+                    <canvas id="chaos-canvas" width="400" height="300" style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); border: 1px solid var(--border-glass);"></canvas>
+                </div>
+                
+                <!-- Estado: terminado -->
+                <div id="chaos-done" class="clicker-state hidden">
+                    <div class="result-card">
+                        <span class="result-emoji">💥</span>
+                        <p class="result-label">Sobreviviste:</p>
+                        <p id="chaos-final-score" class="result-score">0</p>
+                        <p class="result-sub">segundos en el caos</p>
+                    </div>
+                    <div id="submit-status-chaos" class="submit-status">Enviando puntuación...</div>
+                    <button class="btn btn-primary" onclick="resetChaos()">🔄 Intentar de nuevo</button>
+                </div>
+            </div>
+            
+            <!-- PANEL DERECHO: Leaderboard -->
+            <div class="card glass leaderboard-panel">
+                <h3 class="lb-title">🏅 Leaderboard</h3>
+                <p class="lb-game-name">Chaos Dodge</p>
+                <button class="btn btn-small" onclick="loadLeaderboard('chaos')">🔄 Actualizar</button>
+                <div id="leaderboard-chaos" class="leaderboard-table">
                     <p class="lb-loading">Cargando...</p>
                 </div>
             </div>
