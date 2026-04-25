@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Minijuegos web con leaderboard en tiempo real. ¡Compite con tus amigos!">
+    <title>🎮 Lorenzo's Mini Games</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ===== PANTALLA DE NOMBRE ===== -->
+    <div id="screen-name" class="screen active">
+        <div class="card glass">
+            <h1 class="title-glow">🎮 Mini Games</h1>
+            <p class="subtitle">¡Compite con tus amigos y sube al leaderboard!</p>
+            <div class="input-group">
+                <label for="player-name">¿Cómo te llamas?</label>
+                <input type="text" id="player-name" placeholder="Escribe tu nombre..." maxlength="20" autocomplete="off">
+            </div>
+            <button id="btn-start" class="btn btn-primary" disabled>¡Jugar! 🚀</button>
+        </div>
+    </div>
+
+    <!-- ===== PANTALLA MENÚ ===== -->
+    <div id="screen-menu" class="screen">
+        <div class="card glass">
+            <div class="menu-header">
+                <h1 class="title-glow">🎮 Mini Games</h1>
+                <p class="welcome-msg">Hola, <span id="display-name"></span>! 👋</p>
+            </div>
+            <div class="games-grid">
+                <button id="btn-clicker" class="game-card" onclick="navigateTo('screen-clicker')">
+                    <span class="game-icon">👆</span>
+                    <span class="game-title">Speed Clicker</span>
+                    <span class="game-desc">¡Haz el mayor número de clics en 30 segundos!</span>
+                </button>
+                <!-- Aquí se agregarán más juegos -->
+                <div class="game-card coming-soon">
+                    <span class="game-icon">🔒</span>
+                    <span class="game-title">Próximamente</span>
+                    <span class="game-desc">¡Lorenzo está programando más juegos!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PANTALLA CLICKER ===== -->
+    <div id="screen-clicker" class="screen">
+        <div class="card glass game-screen">
+            <button class="btn-back" onclick="navigateTo('screen-menu')">← Menú</button>
+            <h2 class="game-heading">👆 Speed Clicker</h2>
+            <p class="game-instructions">Haz clic lo más rápido que puedas durante 30 segundos</p>
+
+            <!-- Estado: listo para jugar -->
+            <div id="clicker-ready" class="clicker-state">
+                <button id="btn-clicker-start" class="btn btn-primary btn-big pulse" onclick="startClicker()">
+                    ¡Comenzar! ⏱️
+                </button>
+            </div>
+
+            <!-- Estado: jugando -->
+            <div id="clicker-playing" class="clicker-state hidden">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <span class="stat-label">⏱️ Tiempo</span>
+                        <span id="clicker-timer" class="stat-value timer">30</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">👆 Clics</span>
+                        <span id="clicker-count" class="stat-value count">0</span>
+                    </div>
+                </div>
+                <button id="btn-click" class="btn-click" onclick="doClick()">
+                    <span class="click-emoji">👆</span>
+                    <span class="click-text">¡CLIC!</span>
+                </button>
+            </div>
+
+            <!-- Estado: terminado -->
+            <div id="clicker-done" class="clicker-state hidden">
+                <div class="result-card">
+                    <span class="result-emoji">🏆</span>
+                    <p class="result-label">Tu puntuación:</p>
+                    <p id="clicker-final-score" class="result-score">0</p>
+                    <p class="result-sub">clics en 30 segundos</p>
+                </div>
+                <div id="submit-status" class="submit-status">Enviando puntuación...</div>
+                <button class="btn btn-primary" onclick="resetClicker()">🔄 Jugar de nuevo</button>
+            </div>
+
+            <!-- Leaderboard -->
+            <div class="leaderboard-section">
+                <h3 class="lb-title">🏅 Leaderboard - Speed Clicker</h3>
+                <button class="btn btn-small" onclick="loadLeaderboard('clicker')">🔄 Actualizar</button>
+                <div id="leaderboard-clicker" class="leaderboard-table">
+                    <p class="lb-loading">Cargando...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Iframe oculto para enviar formulario -->
+    <iframe id="hidden-iframe" name="hidden-iframe" style="display:none;"></iframe>
+
+    <script src="app.js"></script>
+</body>
+</html>
