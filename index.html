@@ -49,51 +49,55 @@
 
     <!-- ===== PANTALLA CLICKER ===== -->
     <div id="screen-clicker" class="screen">
-        <div class="card glass game-screen">
-            <button class="btn-back" onclick="navigateTo('screen-menu')">← Menú</button>
-            <h2 class="game-heading">👆 Speed Clicker</h2>
-            <p class="game-instructions">Haz clic lo más rápido que puedas durante 30 segundos</p>
+        <div class="game-layout">
+            <!-- PANEL IZQUIERDO: Juego -->
+            <div class="card glass game-panel">
+                <button class="btn-back" onclick="navigateTo('screen-menu')">← Menú</button>
+                <h2 class="game-heading">👆 Speed Clicker</h2>
+                <p class="game-instructions">Haz clic lo más rápido que puedas durante 30 segundos</p>
 
-            <!-- Estado: listo para jugar -->
-            <div id="clicker-ready" class="clicker-state">
-                <button id="btn-clicker-start" class="btn btn-primary btn-big pulse" onclick="startClicker()">
-                    ¡Comenzar! ⏱️
-                </button>
-            </div>
-
-            <!-- Estado: jugando -->
-            <div id="clicker-playing" class="clicker-state hidden">
-                <div class="stats-row">
-                    <div class="stat-box">
-                        <span class="stat-label">⏱️ Tiempo</span>
-                        <span id="clicker-timer" class="stat-value timer">30</span>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-label">👆 Clics</span>
-                        <span id="clicker-count" class="stat-value count">0</span>
-                    </div>
+                <!-- Estado: listo para jugar -->
+                <div id="clicker-ready" class="clicker-state">
+                    <button id="btn-clicker-start" class="btn btn-primary btn-big pulse" onclick="startClicker()">
+                        ¡Comenzar! ⏱️
+                    </button>
                 </div>
-                <button id="btn-click" class="btn-click" onclick="doClick()">
-                    <span class="click-emoji">👆</span>
-                    <span class="click-text">¡CLIC!</span>
-                </button>
-            </div>
 
-            <!-- Estado: terminado -->
-            <div id="clicker-done" class="clicker-state hidden">
-                <div class="result-card">
-                    <span class="result-emoji">🏆</span>
-                    <p class="result-label">Tu puntuación:</p>
-                    <p id="clicker-final-score" class="result-score">0</p>
-                    <p class="result-sub">clics en 30 segundos</p>
+                <!-- Estado: jugando -->
+                <div id="clicker-playing" class="clicker-state hidden">
+                    <div class="stats-row">
+                        <div class="stat-box">
+                            <span class="stat-label">⏱️ Tiempo</span>
+                            <span id="clicker-timer" class="stat-value timer">30</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">👆 Clics</span>
+                            <span id="clicker-count" class="stat-value count">0</span>
+                        </div>
+                    </div>
+                    <button id="btn-click" class="btn-click" onclick="doClick()">
+                        <span class="click-emoji">👆</span>
+                        <span class="click-text">¡CLIC!</span>
+                    </button>
                 </div>
-                <div id="submit-status" class="submit-status">Enviando puntuación...</div>
-                <button class="btn btn-primary" onclick="resetClicker()">🔄 Jugar de nuevo</button>
+
+                <!-- Estado: terminado -->
+                <div id="clicker-done" class="clicker-state hidden">
+                    <div class="result-card">
+                        <span class="result-emoji">🏆</span>
+                        <p class="result-label">Tu puntuación:</p>
+                        <p id="clicker-final-score" class="result-score">0</p>
+                        <p class="result-sub">clics en 30 segundos</p>
+                    </div>
+                    <div id="submit-status" class="submit-status">Enviando puntuación...</div>
+                    <button class="btn btn-primary" onclick="resetClicker()">🔄 Jugar de nuevo</button>
+                </div>
             </div>
 
-            <!-- Leaderboard -->
-            <div class="leaderboard-section">
-                <h3 class="lb-title">🏅 Leaderboard - Speed Clicker</h3>
+            <!-- PANEL DERECHO: Leaderboard (siempre visible) -->
+            <div class="card glass leaderboard-panel">
+                <h3 class="lb-title">🏅 Leaderboard</h3>
+                <p class="lb-game-name">Speed Clicker</p>
                 <button class="btn btn-small" onclick="loadLeaderboard('clicker')">🔄 Actualizar</button>
                 <div id="leaderboard-clicker" class="leaderboard-table">
                     <p class="lb-loading">Cargando...</p>

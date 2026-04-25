@@ -66,8 +66,47 @@ body {
     animation: fadeIn 0.5s ease-out;
 }
 
-.game-screen {
-    max-width: 640px;
+/* ===== TWO-COLUMN GAME LAYOUT ===== */
+.game-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+    max-width: 1040px;
+    width: 100%;
+    align-items: start;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.game-panel {
+    max-width: none;
+}
+
+.leaderboard-panel {
+    max-width: none;
+    position: sticky;
+    top: 24px;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 28px 24px;
+}
+
+.leaderboard-panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.leaderboard-panel::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.leaderboard-panel::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.leaderboard-panel::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
 
 @keyframes fadeIn {
@@ -483,10 +522,20 @@ body {
     text-align: center;
 }
 
+.lb-game-name {
+    font-size: 0.85rem;
+    color: var(--accent-2);
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
 .lb-title {
     font-size: 1.15rem;
     font-weight: 700;
-    margin-bottom: 12px;
+    margin-bottom: 4px;
+    text-align: center;
 }
 
 .leaderboard-table {
@@ -570,6 +619,17 @@ table.lb tbody td:last-child {
 }
 
 /* ===== RESPONSIVE ===== */
+@media (max-width: 860px) {
+    .game-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .leaderboard-panel {
+        position: static;
+        max-height: none;
+    }
+}
+
 @media (max-width: 520px) {
     .card.glass {
         padding: 24px 18px;
