@@ -79,6 +79,9 @@ body {
 
 .game-panel {
     max-width: none;
+    min-height: 460px;
+    display: flex;
+    flex-direction: column;
 }
 
 .leaderboard-panel {
