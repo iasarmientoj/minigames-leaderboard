@@ -141,9 +141,16 @@ function loadLeaderboard(gameId) {
         .then((csv) => {
             const rows = parseCSV(csv);
             const filtered = rows.filter((r) => r.id === gameId);
-            filtered.sort((a, b) => Number(b.score) - Number(a.score));
+            
+            // Ordenar: Reaction Time es de menor a mayor (ms). Los demás de mayor a menor.
+            if (gameId === 'reaction') {
+                filtered.sort((a, b) => Number(a.score) - Number(b.score));
+            } else {
+                filtered.sort((a, b) => Number(b.score) - Number(a.score));
+            }
+            
             const top = filtered.slice(0, 15);
-            renderLeaderboard(container, top);
+            renderLeaderboard(container, top, gameId);
         })
         .catch((err) => {
             console.error('Leaderboard error:', err);
@@ -170,7 +177,7 @@ function parseCSV(csv) {
     return results;
 }
 
-function renderLeaderboard(container, data) {
+function renderLeaderboard(container, data, gameId = null) {
     if (data.length === 0) {
         container.innerHTML = '<p class="lb-empty">🏜️ Aún no hay puntuaciones. ¡Sé el primero!</p>';
         return;
@@ -196,7 +203,7 @@ function renderLeaderboard(container, data) {
             <tr>
                 <td class="rank-cell ${rankClass}">${medal}</td>
                 <td>${escapeHtml(row.player)}</td>
-                <td>${escapeHtml(row.score)}</td>
+                <td>${escapeHtml(row.score)}${gameId === 'reaction' ? ' ms' : ''}</td>
             </tr>
         `;
     });
