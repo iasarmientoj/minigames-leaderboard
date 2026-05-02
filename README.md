@@ -18,7 +18,11 @@ Jugador juega → Termina → Se envía score a Google Forms → Google Sheets l
 ```
 ├── index.html    ← Página principal (pantallas: nombre, menú, juegos)
 ├── style.css     ← Estilos (tema oscuro, glassmorphism)
-├── app.js        ← Lógica de juegos + envío de scores + leaderboard
+├── core.js       ← Sistema base (navegación, scores, leaderboard)
+├── games/        ← Carpeta con los juegos (cada uno en su archivo)
+│   ├── clicker.js
+│   ├── dodge.js
+│   └── chaos.js
 └── README.md
 ```
 
@@ -68,17 +72,39 @@ Copia y pega esto a tu IA para que entienda la estructura y pueda crear más jue
 > **ARCHIVOS:**
 > - `index.html` – Todas las pantallas. Cada juego es un `<div id="screen-NOMBRE" class="screen">` con estructura de dos columnas: panel del juego a la izquierda y panel del leaderboard a la derecha.
 > - `style.css` – Estilos con tema oscuro y glassmorphism. Usa la fuente Outfit.
-> - `app.js` – Toda la lógica. Ya tiene funciones reutilizables:
+> - `core.js` – Sistema base. Ya tiene funciones reutilizables:
 > 
 > **FUNCIONES EXISTENTES QUE DEBES USAR:**
 > - `navigateTo(screenId)` – Cambia entre pantallas
 > - `submitScore(gameId, score)` – Envía la puntuación al Google Form
 > - `loadLeaderboard(gameId)` – Carga el leaderboard para ese juego
+> - `registerGame(gameId, { reset: function })` – Registra el juego en el sistema
 > - `playerName` – Variable global con el nombre del jugador
 > 
-> **PARA AGREGAR UN NUEVO JUEGO NECESITO:**
+> **PARA AGREGAR UN NUEVO JUEGO:**
 > 
-> 1. **En `index.html`:** Una nueva pantalla con este template:
+> 1. **Crea un archivo nuevo en `games/NOMBRE.js`** envuelto en un IIFE:
+> ```javascript
+> (function() {
+>     // Lógica de tu juego...
+>     
+>     function startJuego() { ... }
+>     function resetJuego() { ... }
+>     
+>     // Expón funciones necesarias al global (window)
+>     window.startJuego = startJuego;
+>     
+>     // Regístralo para que el sistema lo limpie al navegar
+>     registerGame('GAME_ID', { reset: resetJuego });
+> })();
+> ```
+> 
+> 2. **En `index.html`:** Agrega el script al final del body:
+> ```html
+> <script src="games/NOMBRE.js"></script>
+> ```
+> 
+> 3. **En `index.html` (pantalla):** Agrega la pantalla con el template:
 > ```html
 > <div id="screen-NOMBRE" class="screen">
 >     <div class="game-layout">
@@ -86,7 +112,7 @@ Copia y pega esto a tu IA para que entienda la estructura y pueda crear más jue
 >             <button class="btn-back" onclick="navigateTo('screen-menu')">← Menú</button>
 >             <h2 class="game-heading">EMOJI TITULO</h2>
 >             <p class="game-instructions">Descripción corta</p>
->             <!-- Aquí va el contenido del juego -->
+>             <!-- Contenido del juego -->
 >         </div>
 >         <div class="card glass leaderboard-panel">
 >             <h3 class="lb-title">🏅 Leaderboard</h3>
@@ -100,33 +126,11 @@ Copia y pega esto a tu IA para que entienda la estructura y pueda crear más jue
 > </div>
 > ```
 > 
-> 2. **En `index.html` (menú):** Un botón en `.games-grid`:
-> ```html
-> <button class="game-card" onclick="navigateTo('screen-NOMBRE')">
->     <span class="game-icon">EMOJI</span>
->     <span class="game-title">TITULO</span>
->     <span class="game-desc">Descripción</span>
-> </button>
-> ```
-> 
-> 3. **En `app.js`:** Agregar el ID en `GAME_IDS`, la lógica del juego, y al final llamar:
-> ```javascript
-> submitScore('GAME_ID', puntuacionFinal);
-> ```
-> 
-> 4. **En `app.js` (navigateTo):** Agregar un `if` para cargar el leaderboard al entrar:
-> ```javascript
-> if (screenId === 'screen-NOMBRE') {
->     // resetear estado del juego
->     loadLeaderboard('GAME_ID');
-> }
-> ```
+> 4. **En `index.html` (menú):** Agrega el botón en `.games-grid`.
 > 
 > **REGLAS:**
 > - El `GAME_ID` debe ser un string corto sin espacios (ej: `memory`, `reaction`, `snake`)
-> - El score siempre es un número (mayor es mejor)
-> - No uses frameworks ni dependencias externas
-> - Mantén el mismo estilo visual (clases CSS existentes: `btn`, `btn-primary`, `stat-box`, `result-card`, etc.)
+> - Al terminar el juego llama a `submitScore('GAME_ID', score)`
 
 ---
 
