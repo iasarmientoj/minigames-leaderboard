@@ -699,3 +699,58 @@ table.lb tbody td:last-child {
     text-align: center;
     padding: 0 16px;
 }
+
+/* ===== MATH SPRINT GAME ===== */
+.math-problem-display {
+    font-size: 4rem;
+    font-weight: 900;
+    text-align: center;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 20px 0;
+    line-height: 1.1;
+    letter-spacing: 2px;
+}
+
+.math-input-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+#math-answer-input {
+    width: 200px;
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 800;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    border: 3px solid var(--border-glass);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    outline: none;
+    transition: var(--transition);
+}
+
+#math-answer-input:focus {
+    border-color: var(--accent-1);
+    box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
+}
+
+#math-answer-input.correct {
+    border-color: var(--success);
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+}
+
+#math-answer-input.incorrect {
+    border-color: var(--accent-3);
+    box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+    animation: shake 0.3s ease-in-out;
+}
+
+.pop-math {
+    animation: clickPop 0.15s ease-out;
+}
