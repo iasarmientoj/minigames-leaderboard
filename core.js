@@ -17,6 +17,7 @@ const GAME_IDS = {
     clicker: 'clicker',
     dodge: 'dodge',
     chaos: 'chaos',
+    math: 'math',
 };
 
 // Registry for games to hook into navigation

@@ -50,6 +50,11 @@
                     <span class="game-title">Chaos Dodge</span>
                     <span class="game-desc">¡Esquiva obstáculos que se mueven en todas direcciones!</span>
                 </button>
+                <button class="game-card" onclick="navigateTo('screen-math')">
+                    <span class="game-icon">🧮</span>
+                    <span class="game-title">Math Sprint</span>
+                    <span class="game-desc">¡Resuelve la mayor cantidad de problemas en 60 segundos!</span>
+                </button>
                 <div class="game-card coming-soon">
                     <span class="game-icon">🔒</span>
                     <span class="game-title">Próximamente</span>
@@ -222,6 +227,67 @@
         </div>
     </div>
 
+    <!-- ===== PANTALLA MATH SPRINT ===== -->
+    <div id="screen-math" class="screen">
+        <div class="game-layout">
+            <!-- PANEL IZQUIERDO: Juego -->
+            <div class="card glass game-panel">
+                <button class="btn-back" onclick="navigateTo('screen-menu')">← Menú</button>
+                <h2 class="game-heading">🧮 Math Sprint</h2>
+                <p class="game-instructions">Suma, multiplica y divide. Responde rápido (Presiona Enter).</p>
+                
+                <!-- Estado: listo para jugar -->
+                <div id="math-ready" class="clicker-state">
+                    <button id="btn-math-start" class="btn btn-primary btn-big pulse" onclick="startMath()">
+                        ¡Comenzar! ⏱️
+                    </button>
+                </div>
+                
+                <!-- Estado: jugando -->
+                <div id="math-playing" class="clicker-state hidden">
+                    <div class="stats-row" style="margin-bottom: 15px;">
+                        <div class="stat-box">
+                            <span class="stat-label">⏱️ Tiempo</span>
+                            <span id="math-timer" class="stat-value timer">60</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">⭐ Puntos</span>
+                            <span id="math-score" class="stat-value count">0</span>
+                        </div>
+                    </div>
+                    
+                    <div id="math-problem" class="math-problem-display">1 + 1</div>
+                    
+                    <div class="math-input-container">
+                        <input type="number" id="math-answer-input" autocomplete="off" placeholder="?" />
+                    </div>
+                </div>
+                
+                <!-- Estado: terminado -->
+                <div id="math-done" class="clicker-state hidden">
+                    <div class="result-card">
+                        <span class="result-emoji">🧠</span>
+                        <p class="result-label">Has resuelto:</p>
+                        <p id="math-final-score" class="result-score">0</p>
+                        <p class="result-sub">problemas correctos</p>
+                    </div>
+                    <div id="submit-status-math" class="submit-status">Enviando puntuación...</div>
+                    <button class="btn btn-primary" onclick="resetMath()">🔄 Intentar de nuevo</button>
+                </div>
+            </div>
+            
+            <!-- PANEL DERECHO: Leaderboard -->
+            <div class="card glass leaderboard-panel">
+                <h3 class="lb-title">🏅 Leaderboard</h3>
+                <p class="lb-game-name">Math Sprint</p>
+                <button class="btn btn-small" onclick="loadLeaderboard('math')">🔄 Actualizar</button>
+                <div id="leaderboard-math" class="leaderboard-table">
+                    <p class="lb-loading">Cargando...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Iframe oculto para enviar formulario -->
     <iframe id="hidden-iframe" name="hidden-iframe" style="display:none;"></iframe>
 
@@ -229,6 +295,7 @@
     <script src="games/clicker.js"></script>
     <script src="games/dodge.js"></script>
     <script src="games/chaos.js"></script>
+    <script src="games/math.js"></script>
 
 </body>
 </html>
